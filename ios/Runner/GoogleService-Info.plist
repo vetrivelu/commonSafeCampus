@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>596278734058-a2hkgku88o2gvce76a9vrf0kf0ogm5ss.apps.googleusercontent.com</string>
+	<string>596278734058-ff9k5h4v9bdtq522bfg4frse04u5s29v.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.596278734058-a2hkgku88o2gvce76a9vrf0kf0ogm5ss</string>
+	<string>com.googleusercontent.apps.596278734058-ff9k5h4v9bdtq522bfg4frse04u5s29v</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>596278734058-q9j82fk3kf8e8jonp5avfef43h97mjo7.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.digisailor.safecampusCert</string>
+	<string>com.digisailor.safecampus</string>
 	<key>PROJECT_ID</key>
 	<string>kkm-beacon</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:596278734058:ios:a6066af7bda1590fcc7b93</string>
+	<string>1:596278734058:ios:0f09eb8b6727c140cc7b93</string>
 	<key>DATABASE_URL</key>
 	<string>https://kkm-beacon-default-rtdb.asia-southeast1.firebasedatabase.app</string>
 </dict>

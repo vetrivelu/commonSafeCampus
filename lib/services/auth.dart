@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:cloud_functions/cloud_functions.dart';
@@ -22,34 +21,35 @@ class AuthenticationService extends ChangeNotifier {
 
   Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
   User? get currentUser => _firebaseAuth.currentUser;
-  get claims => this.currentUser!.getIdTokenResult(true).then((value) => value.claims);
-  Future<String?> signUpWithEmailAndPassword({required String email, required String password}) async {
+  get claims =>
+      this.currentUser!.getIdTokenResult(true).then((value) => value.claims);
+  Future<String?> signUpWithEmailAndPassword(
+      {required String email, required String password}) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       return "uid $uid";
-    }
-    on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        return('The password provided is too weak.');
+        return ('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        return('The account already exists for that email.');
+        return ('The account already exists for that email.');
       } else {
         return e.message;
       }
+    } catch (e) {
+      // return e.toString();
     }
-    catch (e) {
-     // return e.toString();
-    }
-
   }
 
-  Future<String?> signInWithEmailAndPassword({required String email, required String password}) async {
+  Future<String?> signInWithEmailAndPassword(
+      {required String email, required String password}) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-      if(userCredential.user != null){
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      if (userCredential.user != null) {
         return "uid $uid";
       }
     } on FirebaseAuthException catch (e) {
@@ -58,8 +58,8 @@ class AuthenticationService extends ChangeNotifier {
         return e.message.toString();
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
-        return  e.message.toString();
-      } else if (e.code == 'unknown'){
+        return e.message.toString();
+      } else if (e.code == 'unknown') {
         return e.message.toString();
       }
     }

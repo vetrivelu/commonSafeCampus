@@ -11,11 +11,9 @@ import 'package:pert/screens/announcementpage.dart';
 import 'package:pert/screens/notificationpage.dart';
 import 'package:pert/screens/profile.dart';
 
-
 import 'package:pert/screens/quarantine.dart';
 import 'package:pert/screens/tabbar.dart';
 import 'package:pert/screens/whistleblower.dart';
-import 'package:pert/services/db.dart';
 import 'package:pert/widgets/test.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -23,10 +21,8 @@ import '../main.dart';
 import 'contact_list.dart';
 import 'dart:io';
 
-
 // ignore: unused_import
 import 'package:path/path.dart';
-
 
 //
 
@@ -68,7 +64,6 @@ class _HomePageState extends State<HomePage> {
     //   }
     // });
 
-
     widget.user.loadContacts();
     Get.put(UserController(widget.user));
     _firebaseMessaging.getInitialMessage().then((message) {
@@ -79,10 +74,14 @@ class _HomePageState extends State<HomePage> {
     });
 
     ///forground messages
-    FirebaseMessaging.onMessage.listen((message)async {
+    FirebaseMessaging.onMessage.listen((message) async {
       if (message.notification != null) {
         var preferences = await prefs;
-        preferences.setStringList(DateTime.now().toIso8601String().substring(0,19)+".000000", [message.notification!.body.toString(), message.notification!.title.toString()]);
+        preferences.setStringList(
+            DateTime.now().toIso8601String().substring(0, 19) + ".000000", [
+          message.notification!.body.toString(),
+          message.notification!.title.toString()
+        ]);
         print(message.notification!.body);
         print(message.notification!.title);
         print("message");
@@ -92,7 +91,11 @@ class _HomePageState extends State<HomePage> {
     FirebaseMessaging.onBackgroundMessage((message) async {
       if (message.notification != null) {
         var preferences = await prefs;
-        preferences.setStringList(DateTime.now().toIso8601String().substring(0,19)+".000000", [message.notification!.body.toString(), message.notification!.title.toString()]);
+        preferences.setStringList(
+            DateTime.now().toIso8601String().substring(0, 19) + ".000000", [
+          message.notification!.body.toString(),
+          message.notification!.title.toString()
+        ]);
         print(message.notification!.body);
         print(message.notification!.title);
         print("message");
@@ -101,16 +104,20 @@ class _HomePageState extends State<HomePage> {
     });
 
     ///background msg
-    FirebaseMessaging.onMessageOpenedApp.listen((message) async{
+    FirebaseMessaging.onMessageOpenedApp.listen((message) async {
       if (message.notification != null) {
         var preferences = await prefs;
-        preferences.setStringList(DateTime.now().toIso8601String(), [message.notification!.body.toString(), message.notification!.title.toString()]);
+        preferences.setStringList(DateTime.now().toIso8601String(), [
+          message.notification!.body.toString(),
+          message.notification!.title.toString()
+        ]);
         print(message.notification!.body);
         print(message.notification!.title);
         print("message");
       }
     });
-    _firebaseMessaging.setForegroundNotificationPresentationOptions(alert: true);
+    _firebaseMessaging.setForegroundNotificationPresentationOptions(
+        alert: true);
     _firebaseMessaging.subscribeToTopic('Announcement');
 
     _getToken();
@@ -119,7 +126,6 @@ class _HomePageState extends State<HomePage> {
   // List<int> list = [1, 2, 3, 4, 5];
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       // floatingActionButton: FloatingActionButton(
       //   onPressed: ()
@@ -177,9 +183,7 @@ class _HomePageState extends State<HomePage> {
               ),
               color: const Color(0xFFED392D),
               onPressed: () {
-
-
-                Get.to(()=>NotificationPage());
+                Get.to(() => NotificationPage());
               },
             ),
           )
@@ -203,28 +207,27 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.all(8),
         child: Column(
           children: [
-
             FutureBuilder(
               future: getCaruosel(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data != null) {
                     snapshot.data["imageUrl"].forEach((elemnt) {
-                      _paths.add(Paths(type: PathType.url, path: elemnt.toString()));
+                      _paths.add(
+                          Paths(type: PathType.url, path: elemnt.toString()));
                     });
                     print(_paths);
                   }
-                  return
-                    CarouselSlider(
-                      options: CarouselOptions(
-                        height: 150,
-                        autoPlay: true,
-                        aspectRatio: 2,
-                        enlargeCenterPage: true,
-                        enlargeStrategy: CenterPageEnlargeStrategy.height,
-                      ),
-                      items: getItems(),
-                    );
+                  return CarouselSlider(
+                    options: CarouselOptions(
+                      height: 150,
+                      autoPlay: true,
+                      aspectRatio: 2,
+                      enlargeCenterPage: true,
+                      enlargeStrategy: CenterPageEnlargeStrategy.height,
+                    ),
+                    items: getItems(),
+                  );
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -233,11 +236,11 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: GridView(
                 padding: EdgeInsets.all(16),
-                  addRepaintBoundaries:true,
-
+                addRepaintBoundaries: true,
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
                 children: [
                   InkWell(
                     onTap: () => Get.to(() => covidstatus(
@@ -252,7 +255,8 @@ class _HomePageState extends State<HomePage> {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ContactHistoryDetails(contactHistory: widget.user.contactHistory),
+                        builder: (context) => ContactHistoryDetails(
+                            contactHistory: widget.user.contactHistory),
                       ),
                     ),
                     child: Tile(
@@ -289,7 +293,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: () => Get.to(() => ProfilePage(
-
                           userModel: widget.user,
                         )),
                     child: Tile(
@@ -305,6 +308,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
   // Paths? _path;
   late List<Paths?> _paths = [];
   List<Widget> getItems() {
@@ -327,10 +331,6 @@ class _HomePageState extends State<HomePage> {
         return NullImage();
     }
   }
-
-
-
-
 }
 
 class Tile extends StatelessWidget {
@@ -347,14 +347,17 @@ class Tile extends StatelessWidget {
         elevation: 5,
         child: Container(
           margin: EdgeInsets.all(2),
-          decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(18)),
+          decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(18)),
           child: GridTile(
             footer: Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   title!,
-                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
                 ),
               ),
             ),
@@ -372,8 +375,6 @@ class Tile extends StatelessWidget {
   }
 }
 
-
-
 class NetworkImage extends StatelessWidget {
   const NetworkImage({
     Key? key,
@@ -384,56 +385,54 @@ class NetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // File file = File(url);
-    return
-      Padding(
-        padding: const EdgeInsets.all(10),
-        child: GestureDetector(
-          onTap: () async {
-
-            await launch(url, enableDomStorage: true);
-          },
-          child: Material(
-
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-            elevation: 5,
-            child: Container(
-              height: 10,
-              margin: const EdgeInsets.all(4),
-              child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(18)),
-                  child: Stack(
-                    children: <Widget>[
-                      Stack(
-                        children: [
-                          Image.network(url, fit: BoxFit.cover, width: 1000.0),
-                          Positioned(
-                            bottom: 0.0,
-                            left: 0.0,
-                            right: 0.0,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter,
-                                ),
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: GestureDetector(
+        onTap: () async {
+          await launch(url, enableDomStorage: true);
+        },
+        child: Material(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          elevation: 5,
+          child: Container(
+            height: 10,
+            margin: const EdgeInsets.all(4),
+            child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(18)),
+                child: Stack(
+                  children: <Widget>[
+                    Stack(
+                      children: [
+                        Image.network(url, fit: BoxFit.cover, width: 1000.0),
+                        Positioned(
+                          bottom: 0.0,
+                          left: 0.0,
+                          right: 0.0,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromARGB(200, 0, 0, 0),
+                                  Color.fromARGB(0, 0, 0, 0)
+                                ],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
                               ),
-
                             ),
                           ),
-                        ],
-                      )
-
-
-                    ],
-                  )
-              ),
-            ),
+                        ),
+                      ],
+                    )
+                  ],
+                )),
           ),
         ),
-      );
+      ),
+    );
   }
 }
+
 class FileImage extends StatelessWidget {
   const FileImage({
     Key? key,
@@ -448,7 +447,7 @@ class FileImage extends StatelessWidget {
       padding: EdgeInsetsDirectional.all(12),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.42,
-        decoration: BoxDecoration (
+        decoration: BoxDecoration(
           color: Color(0xFFEEEEEE),
           borderRadius: BorderRadius.circular(20),
         ),
